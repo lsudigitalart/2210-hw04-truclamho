@@ -49,7 +49,10 @@ function draw() {
     fill(255);
     textAlign(CENTER, CENTER);
     textSize(20);
-    text("Press any key to start", width / 2, height / 2);
+    text("Katamari Damacy Inspired", 300, 250);
+    text("Minigame", 300, 280);
+    textSize(15);
+    text("Press any key to start", 300, 320);
     return;
   }
 
@@ -79,35 +82,40 @@ function draw() {
 
   image(spriteImage, sprite.x, sprite.y, sprite.size, sprite.size);
 
-  // the circle and sprite interaction space
+  // circle collected
   for (let i = 0; i < circles.length; i++) {
     if (!circles[i].collected) {
       fill(255, 0, 0);
       ellipse(circles[i].x, circles[i].y, circles[i].size);
 
-      if (dist(sprite.x + sprite.size / 2, sprite.y + sprite.size / 2, circles[i].x, circles[i].y) < (sprite.size / 2 + circles[i].size / 2)) {
+      // distance from sprite for score
+      if (dist(sprite.x + sprite.size / 4, sprite.y + sprite.size / 4, circles[i].x, circles[i].y) < (sprite.size / 2 + circles[i].size / 2)) {
         circles[i].collected = true;
         attachedCircles.push(circles[i]);
 
         game.score++;
 
+        //create more circles
         let newCircle = createNewCircle();
-        circles.push(newCircle);
+        circles.push(newCircle);  
       }
     }
   }
 
-  // circle surrounding sprite
+  // holding circle
   for (let i = 0; i < attachedCircles.length; i++) {
-    let angle = TWO_PI / attachedCircles.length * i; 
-    let distanceFromSprite = sprite.size / 2 + attachedCircles[i].size / 2; 
-    let xPos = sprite.x + sprite.size / 2 + cos(angle) * distanceFromSprite;
-    let yPos = sprite.y + sprite.size / 2 + sin(angle) * distanceFromSprite;
+    let offset = i * 3; 
+    let xPos = sprite.x + sprite.size / 3 + offset + random(-1,1);
+    let yPos = sprite.y + sprite.size / 3 + offset  + random(-1,1);
 
     fill(255, 0, 0);
     ellipse(xPos, yPos, attachedCircles[i].size);
-  }
+}
 
+
+
+  
+  
   fill(255);
   textSize(24);
   text("Score: " + game.score, 480, 45);
